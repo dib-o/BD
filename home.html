@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=375, height=667, initial-scale=1, maximum-scale=1, user-scalable=no">>
+        <title>Shania 18th</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" href="18th.png">
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Pacifico&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    </head>
+    <style>
+        .h1{
+            font-family: 'Lobster', cursive;
+            font-size: 10vw;
+            color:white;
+            text-align: center;
+            line-height: 50px;
+            margin-bottom: 70px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+        }
+        html, body {
+            background: #000;
+            width: 375px; /* Mobile width */
+            height: 667px; /* Mobile height */
+            overflow: hidden; /* Prevents scrolling */
+            margin: 0;
+            padding: 0;
+            position: fixed;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .Home1{
+            width:100%;
+            height:100%;
+            display:flex;
+            align-items:flex-end;
+            justify-content:center;
+            background-image: url(main.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
+        .fade-image {
+            transition: opacity 5s ease-in-out;
+            cursor: pointer;
+        }
+
+        .fade-out {
+            opacity: 0;
+        }
+        .slider {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            background: #000;
+        }
+
+        .slide-track {
+            display: flex;
+            animation: move 40s linear infinite;
+        }
+        .reverse-slide-track {
+            display: flex;
+            animation: rmove 40s linear infinite;
+        }
+        .slide {
+            width: 150px; /* Adjust the width */
+            height: 100px; /* Adjust the height */
+            object-fit: cover;
+            margin: 20px 10px;
+        }
+        @keyframes rmove{
+            0% {transform: translateX(-100%);}
+            50% {transform: translateX(100%);}
+            50% {transform: translateX(100%);}
+            100% {transform: translateX(-100%);}
+        }
+
+        @keyframes move {
+            0% { transform: translateX(100%); }
+            50% {transform: translateX(-100%);}
+            50% {transform: translateX(-100%);}
+            100% { transform: translateX(100%); }
+        }
+    </style>
+    <body>
+        <audio id="myAudio" autoplay>
+            <source src="song.mp3"  type="audio/mpeg">
+        </audio>
+        <div class="Home1 fade-image" id="birthdayImage">
+            <div class="h1">
+                Happy<br>18th<br>Birthday!!!
+            </div>
+        </div>
+        <div class="slider" id="part2" style="display:none;">
+            <div class="slide-track" style="margin-top:40px;">
+                <img src="1.jpg" class="slide">
+                <img src="2.jpg" class="slide">
+                <img src="3.jpg" class="slide">
+                <img src="4.jpg" class="slide">
+            </div>
+            <div class="reverse-slide-track">
+                <img src="5.jpg" class="slide">
+                <img src="6.jpg" class="slide">
+                <img src="7.jpg" class="slide">
+                <img src="8.jpg" class="slide">
+            </div>
+            <div class="slide-track">
+                <img src="9.jpg" class="slide">
+                <img src="10.webp" class="slide">
+                <img src="11.jpg" class="slide">
+                <img src="12.jpg" class="slide">
+            </div>
+            <div class="reverse-slide-track">
+                <img src="13.jpg" class="slide">
+                <img src="14.webp" class="slide">
+                <img src="15.jpg" class="slide">
+                <img src="16.jpg" class="slide">
+            </div>
+        </div>
+            
+        </div>
+        <!--<canvas id="pinkboard"></canvas>
+        <script src="pink heart.js"></script>-->
+        <script>
+            const p2 = document.getElementById("part2");
+            document.getElementById("birthdayImage").addEventListener("click", function() {
+                this.classList.add("fade-out");
+                setTimeout(() => {
+                    this.style.display = "none";
+                    p2.style.display = "block";  
+                }, 5000);
+            });
+            document.addEventListener("DOMContentLoaded", function() {
+                let audio = document.getElementById("myAudio");
+                
+                // Attempt to play the audio when the page loads
+                let playPromise = audio.play();
+            
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log("Autoplay started");
+                    }).catch(error => {
+                        console.log("Autoplay prevented, waiting for user interaction");
+            
+                        // Play audio after user clicks anywhere
+                        document.addEventListener("click", () => {
+                            audio.play();
+                        }, { once: true });
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>
