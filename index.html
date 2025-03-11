@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHEYNA 18TH</title>
-    <link rel="icon" href="18th.png">
+    <title>3D Image Cube</title>
     <style>
         body {
             display: flex;
@@ -69,15 +68,20 @@
             document.removeEventListener('mousemove', rotateCube);
         });
 
-        function rotateCube(e) {
-            let deltaX = e.clientX - startX;
-            let deltaY = e.clientY - startY;
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            let deltaX = e.touches[0].clientX - startX;
+            let deltaY = e.touches[0].clientY - startY;
             rotateX += deltaY * 0.5;
             rotateY += deltaX * 0.5;
             cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            startX = e.clientX;
-            startY = e.clientY;
-        }
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
     </script>
 </body>
 </html>
