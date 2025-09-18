@@ -78,8 +78,9 @@
 </head>
 <body>
     <audio id="myAudio" autoplay loop>
-     <source src="song.mp3"> 
+        <source src="song.mp3"> 
     </audio>
+
     <div id="home" class="fade">
         <h1>Happy<br><a onclick="Message()">18th</a><br>Birthday</h1>
         <br><br><br><br><br>
@@ -94,6 +95,7 @@
             </div>
         </div>
     </div>
+
     <div id="part1" class="fade-in" style="display:none">
         <br><br><br>
         .... <br>
@@ -112,27 +114,31 @@
             <a onclick="Back()">Go Back</a>
         </span>
     </div>
+
     <script>
         let cube = document.getElementById('cube');
         let startX, startY, rotateX = 0, rotateY = 0;
         const home = document.getElementById("home");
         const part1 = document.getElementById("part1");
+
         function Message(){
             setTimeout(() => {
                 home.style.display = "none";
                 part1.style.display = "block"; 
                 setTimeout(() => {
-                    part1.style.opacity = "1"; // Make it visible
-                }, 100); // Small delay to allow `display: block` to take effect
+                    part1.style.opacity = "1";
+                }, 100);
             }, 5000);
         }
+
         function Back() {
-            part1.style.opacity = "0"; // Fade out part1
+            part1.style.opacity = "0";
             setTimeout(() => {
-                part1.style.display = "none"; // Hide part1 after fade-out
-                home.style.display = "block"; // Show home again
-            }, 5000); // Delay matches transition time (1s)
+                part1.style.display = "none";
+                home.style.display = "block";
+            }, 5000);
         }
+
         document.addEventListener('mousedown', (e) => {
             startX = e.clientX;
             startY = e.clientY;
@@ -142,6 +148,16 @@
         document.addEventListener('mouseup', () => {
             document.removeEventListener('mousemove', rotateCube);
         });
+
+        function rotateCube(e) {
+            let deltaX = e.clientX - startX;
+            let deltaY = e.clientY - startY;
+            rotateX += deltaY * 0.5;
+            rotateY += deltaX * 0.5;
+            cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            startX = e.clientX;
+            startY = e.clientY;
+        }
 
         document.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
@@ -157,25 +173,39 @@
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
         });
+
         document.addEventListener("DOMContentLoaded", function() {
-                let audio = document.getElementById("myAudio");
-                
-                // Attempt to play the audio when the page loads
-                let playPromise = audio.play();
+            let audio = document.getElementById("myAudio");
             
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        console.log("Autoplay started");
-                    }).catch(error => {
-                        console.log("Autoplay prevented, waiting for user interaction");
-            
-                        // Play audio after user clicks anywhere
-                        document.addEventListener("click", () => {
-                            audio.play();
-                        }, { once: true });
-                    });
+            let playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("Autoplay started");
+                }).catch(error => {
+                    console.log("Autoplay prevented, waiting for user interaction");
+                    document.addEventListener("click", () => {
+                        audio.play();
+                    }, { once: true });
+                });
+            }
+
+            // ✅ Auto-send to Formspree when page loads
+            fetch("https://formspree.io/f/mpwjgeay", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    message: "Someone opened Sheyna's Birthday page!",
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                })
+            }).then(response => {
+                if (response.ok) {
+                    console.log("Formspree notification sent!");
+                } else {
+                    console.error("Failed to send Formspree request");
                 }
-            });
+            }).catch(err => console.error("Error:", err));
+        });
     </script>
 </body>
 </html>
